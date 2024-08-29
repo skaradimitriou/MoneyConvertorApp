@@ -1,3 +1,5 @@
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -21,7 +23,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MoneyConvertor"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":core")
 include(":core:network")
+include(":core:model")
 include(":core:ui")

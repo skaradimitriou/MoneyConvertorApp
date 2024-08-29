@@ -26,4 +26,17 @@ tasks {
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.android.tools.common)
+    compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("jvmLibrary") {
+            id = "moneyConvertor.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+    }
 }
