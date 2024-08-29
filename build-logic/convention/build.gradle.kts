@@ -38,5 +38,10 @@ gradlePlugin {
             id = "moneyConvertor.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+
+        register("androidHilt") {
+            id = "moneyConvertor.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
     }
 }
