@@ -1,7 +1,6 @@
 package com.example.moneyconvertor
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,27 +11,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.example.moneyconvertor.ui.theme.MoneyConvertorTheme
-import com.stathis.network.service.CurrencyService
+import com.stathis.designsystem.components.MCTextMenu
+import com.stathis.designsystem.theme.MoneyConvertorTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var service : CurrencyService
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val data = service.getExchangeRates()
-            Log.d("data", "$data")
-        }
-
 
         enableEdgeToEdge()
         setContent {
@@ -42,6 +29,12 @@ class MainActivity : ComponentActivity() {
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
+                    MCTextMenu(
+                        selectedOption = "USD",
+                        options = listOf("USD", "EUR", "GBP")
+                    ) {
+
+                    }
                 }
             }
         }

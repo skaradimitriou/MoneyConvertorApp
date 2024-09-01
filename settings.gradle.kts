@@ -23,9 +23,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MoneyConvertor"
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core:network")
 include(":core:model")
 include(":core:data")
 include(":core:ui")
+include(":core:designsystem")

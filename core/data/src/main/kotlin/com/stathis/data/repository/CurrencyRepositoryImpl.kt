@@ -1,6 +1,6 @@
 package com.stathis.data.repository
 
-import com.stathis.model.com.currency_convertor.ExchangeRates
+import com.stathis.model.currency_convertor.ExchangeRates
 import com.stathis.network.model.response.toExternalModel
 import com.stathis.network.service.CurrencyService
 import javax.inject.Inject

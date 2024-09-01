@@ -1,8 +1,8 @@
 package com.stathis.network.model.response
 
-import com.stathis.model.com.currency_convertor.CurrencyInfo
-import com.stathis.model.com.currency_convertor.ExchangeRates
-import com.stathis.model.com.currency_convertor.Meta
+import com.stathis.model.currency_convertor.CurrencyInfo
+import com.stathis.model.currency_convertor.ExchangeRates
+import com.stathis.model.currency_convertor.Meta
 import kotlinx.serialization.Serializable
 
 @Serializable
