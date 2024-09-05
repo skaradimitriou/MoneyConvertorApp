@@ -1,6 +1,10 @@
 package com.stathis.currencyconverter
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,15 +12,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +42,7 @@ import com.stathis.designsystem.components.MCCard
 import com.stathis.designsystem.components.MCTextMenu
 import com.stathis.designsystem.components.McTextField
 import com.stathis.designsystem.theme.MoneyConvertorTheme
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun CurrencyConvertorRoute() {
@@ -36,7 +50,7 @@ internal fun CurrencyConvertorRoute() {
 }
 
 @Composable
-internal fun CurrencyConverterScreen() {
+fun CurrencyConverterScreen() {
     MCBackgroundScreen {
         Column(
             modifier = Modifier
@@ -68,10 +82,33 @@ internal fun CurrencyConverterScreen() {
                 onToCurrencyChanged = {
 
                 },
-                swapCurrencies = {
+                onSwap = {
 
                 }
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
+            Text(
+                text = stringResource(R.string.indicative_exchange_rate),
+                modifier = Modifier.padding(horizontal = 22.dp),
+                style = MaterialTheme.typography.labelSmall
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Placeholder",
+                modifier = Modifier.padding(horizontal = 22.dp),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = Color.Black
+                )
+            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
     }
 }
@@ -84,7 +121,7 @@ private fun CurrencyConverterCard(
     toCurrency: CurrencyUiModel,
     onFromCurrencyChanged: (CurrencyUiModel) -> Unit,
     onToCurrencyChanged: (CurrencyUiModel) -> Unit,
-    swapCurrencies: () -> Unit
+    onSwap: () -> Unit
 ) {
     MCCard(
         modifier = Modifier
@@ -98,7 +135,11 @@ private fun CurrencyConverterCard(
             onToCurrencyChange = onFromCurrencyChanged
         )
 
-        //FIXME: Add the Swapper
+        Spacer(modifier = Modifier.height(30.dp))
+
+        CurrenciesSwapper(
+            onSwap = onSwap
+        )
 
         Spacer(modifier = Modifier.height(30.dp))
         CurrencyInfoRow(
@@ -157,6 +198,51 @@ private fun CurrencyInfoRow(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
                 )
+            )
+        }
+    }
+}
+
+@Composable
+fun CurrenciesSwapper(
+    modifier: Modifier = Modifier,
+    onSwap: () -> Unit
+) {
+    val animatable = remember {
+        androidx.compose.animation.core.Animatable(0f)
+    }
+
+    val scope = rememberCoroutineScope()
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        HorizontalDivider()
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary)
+                .clickable {
+                    if (animatable.isRunning) return@clickable
+
+                    scope.launch {
+                        onSwap()
+                        animatable.animateTo(
+                            animatable.value + 180f,
+                            tween(300)
+                        )
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .rotate(animatable.value),
+                painter = painterResource(R.drawable.ic_swap_white),
+                contentDescription = null,
+                tint = Color.White
             )
         }
     }
