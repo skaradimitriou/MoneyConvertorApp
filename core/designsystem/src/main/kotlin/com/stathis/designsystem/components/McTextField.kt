@@ -26,7 +26,7 @@ fun McTextField(
 ) {
 
     BasicTextField(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .clip(RoundedCornerShape(7.dp))
