@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -36,6 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.stathis.designsystem.R
 import com.stathis.designsystem.components.MCBackgroundScreen
 import com.stathis.designsystem.components.MCCard
@@ -45,12 +48,32 @@ import com.stathis.designsystem.theme.MoneyConvertorTheme
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun CurrencyConvertorRoute() {
+fun CurrencyConvertorRoute(
+    viewModel: CurrencyConvertorViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    CurrencyConverterScreen(
+        uiState = uiState,
+        onFromCurrencyChange = {
+
+        },
+        onToCurrencyChange = {
+
+        },
+        onSwap = {
+
+        }
+    )
 }
 
 @Composable
-fun CurrencyConverterScreen() {
+internal fun CurrencyConverterScreen(
+    uiState: CurrencyConvertorUiState,
+    onFromCurrencyChange: (CurrencyUiModel) -> Unit,
+    onToCurrencyChange: (CurrencyUiModel) -> Unit,
+    onSwap: () -> Unit
+) {
     MCBackgroundScreen {
         Column(
             modifier = Modifier
@@ -75,10 +98,12 @@ fun CurrencyConverterScreen() {
 
             Spacer(modifier = Modifier.height(50.dp))
             CurrencyConverterCard(
-                allCurrencies = listOf(),
-                fromCurrency = CurrencyUiModel("USD", ""),
-                toCurrency = CurrencyUiModel("USD", ""),
-                onFromCurrencyChanged = {},
+                allCurrencies = uiState.allCurrencies,
+                fromCurrency = uiState.fromCurrency,
+                toCurrency = uiState.toCurrency,
+                onFromCurrencyChanged = {
+
+                },
                 onToCurrencyChanged = {
 
                 },
@@ -89,25 +114,27 @@ fun CurrencyConverterScreen() {
 
             Spacer(modifier = Modifier.height(30.dp))
             Text(
-                text = stringResource(R.string.indicative_exchange_rate),
+                text = "${stringResource(R.string.indicative_exchange_rate)} ${uiState.lastUpdated}",
                 modifier = Modifier.padding(horizontal = 22.dp),
                 style = MaterialTheme.typography.labelSmall
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Placeholder",
+                text = uiState.indicativeExchangeRate,
                 modifier = Modifier.padding(horizontal = 22.dp),
                 style = MaterialTheme.typography.labelSmall.copy(
                     color = Color.Black
                 )
             )
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(30.dp)
-                )
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
             }
         }
     }
@@ -252,6 +279,11 @@ fun CurrenciesSwapper(
 @Composable
 fun CurrencyConverterScreenPreview(modifier: Modifier = Modifier) {
     MoneyConvertorTheme {
-        CurrencyConverterScreen()
+        CurrencyConverterScreen(
+            uiState = CurrencyConvertorUiState.PreviewData,
+            onFromCurrencyChange = {},
+            onToCurrencyChange = {},
+            onSwap = {},
+        )
     }
 }

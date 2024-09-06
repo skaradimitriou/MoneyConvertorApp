@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.stathis.currencyconverter.CurrencyConverterScreen
+import com.stathis.currencyconverter.CurrencyConvertorRoute
 import com.stathis.designsystem.theme.MoneyConvertorTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MoneyConvertorTheme {
-                CurrencyConverterScreen()
+                CurrencyConvertorRoute()
             }
         }
     }
