@@ -55,9 +55,7 @@ fun CurrencyConvertorRoute(
 
     CurrencyConverterScreen(
         uiState = uiState,
-        onFromCurrencyChange = {
-
-        },
+        onFromCurrencyChange = viewModel::onFromCurrencyChange,
         onToCurrencyChange = {
 
         },
@@ -101,15 +99,9 @@ internal fun CurrencyConverterScreen(
                 allCurrencies = uiState.allCurrencies,
                 fromCurrency = uiState.fromCurrency,
                 toCurrency = uiState.toCurrency,
-                onFromCurrencyChanged = {
-
-                },
-                onToCurrencyChanged = {
-
-                },
-                onSwap = {
-
-                }
+                onFromCurrencyChanged = onFromCurrencyChange,
+                onToCurrencyChanged = onToCurrencyChange,
+                onSwap = onSwap
             )
 
             Spacer(modifier = Modifier.height(30.dp))

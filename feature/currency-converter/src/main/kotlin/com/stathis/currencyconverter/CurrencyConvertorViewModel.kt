@@ -79,6 +79,67 @@ class CurrencyConvertorViewModel @Inject constructor(
         return Pair(fromCurrency, toCurrency)
     }
 
+    fun onFromCurrencyChange(fromCurrency: CurrencyUiModel) {
+        when (val validationResult = fromCurrency.value.safeToDouble()) {
+            is StringToDoubleConversionResult.Valid -> {
+                with(uiState.value) {
+                    val convertResult = convert(
+                        fromVsBaseValue = exchangeRates.rates.getValue(fromCurrency.code),
+                        toVsBaseValue = exchangeRates.rates.getValue(toCurrency.code),
+                        amount = validationResult.value
+                    )
+                    _uiState.update {
+                        it.copy(
+                            fromCurrency = fromCurrency,
+                            toCurrency = toCurrency.copy(value = convertResult),
+                            indicativeExchangeRate = "1 ${fromCurrency.code} = ${
+                                getIndicativeExchangeRate(
+                                    fromCurrency.code,
+                                    toCurrency.code
+                                )
+                            } ${toCurrency.code}"
+                        )
+                    }
+                }
+            }
+
+            is StringToDoubleConversionResult.Empty -> {
+                _uiState.update {
+                    it.copy(
+                        fromCurrency = it.fromCurrency.copy(value = ""),
+                        toCurrency = it.toCurrency.copy(value = "")
+                    )
+                }
+            }
+
+            is StringToDoubleConversionResult.InValid -> Unit
+        }
+    }
+
+    private fun getIndicativeExchangeRate(
+        fromCurrencyCode: String,
+        toCurrencyCode: String
+    ): String {
+        return convert(
+            fromVsBaseValue = exchangeRates.rates.getValue(fromCurrencyCode),
+            toVsBaseValue = exchangeRates.rates.getValue(toCurrencyCode),
+            amount = 1.0
+        )
+    }
+
+    private fun String.safeToDouble(): StringToDoubleConversionResult {
+        return if (this.endsWith(".")) {
+            //example: user types "12."
+            StringToDoubleConversionResult.Valid(value = dropLast(1).toDouble())
+        } else if (this.isEmpty()) {
+            StringToDoubleConversionResult.Empty
+        } else {
+            this.toDoubleOrNull()?.let {
+                StringToDoubleConversionResult.Valid(it)
+            } ?: StringToDoubleConversionResult.InValid
+        }
+    }
+
     private fun convert(
         fromVsBaseValue: Double,
         toVsBaseValue: Double,
@@ -88,4 +149,10 @@ class CurrencyConvertorViewModel @Inject constructor(
             String.format(Locale.ENGLISH, "%.2f", it)
         }
     }
+}
+
+private sealed interface StringToDoubleConversionResult {
+    data class Valid(val value: Double) : StringToDoubleConversionResult
+    data object InValid : StringToDoubleConversionResult
+    data object Empty : StringToDoubleConversionResult
 }
