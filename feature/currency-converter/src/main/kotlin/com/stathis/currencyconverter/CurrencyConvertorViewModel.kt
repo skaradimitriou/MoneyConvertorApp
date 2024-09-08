@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 
@@ -43,7 +45,7 @@ class CurrencyConvertorViewModel @Inject constructor(
                     allCurrencies = exchangeRates.rates.keys.map {
                         CurrencyUiModel(code = it, value = "")
                     },
-                    lastUpdated = exchangeRates.lastUpdatedDate,
+                    lastUpdated = fromDate(exchangeRates.lastUpdatedDate),
                 )
             }
             setInitialCurrencies()
@@ -116,6 +118,56 @@ class CurrencyConvertorViewModel @Inject constructor(
         }
     }
 
+    fun onToCurrencyChange(toCurrency: CurrencyUiModel) {
+        if (toCurrency.code != uiState.value.toCurrency.code) {
+            _uiState.update {
+                it.copy(
+                    toCurrency = toCurrency
+                )
+            }
+            onFromCurrencyChange(fromCurrency = uiState.value.fromCurrency)
+            return
+        }
+
+        when (val validationResult = toCurrency.value.safeToDouble()) {
+            is StringToDoubleConversionResult.Valid -> {
+                with(uiState.value) {
+                    val convertResult = convert(
+                        fromVsBaseValue = exchangeRates.rates.getValue(toCurrency.code),
+                        toVsBaseValue = exchangeRates.rates.getValue(fromCurrency.code),
+                        amount = validationResult.value
+                    )
+                    _uiState.update {
+                        it.copy(
+                            fromCurrency = fromCurrency.copy(value = convertResult),
+                            toCurrency = toCurrency.copy(value = convertResult)
+                        )
+                    }
+                }
+            }
+
+            is StringToDoubleConversionResult.Empty -> {
+                _uiState.update {
+                    it.copy(
+                        fromCurrency = it.fromCurrency.copy(value = ""),
+                        toCurrency = it.toCurrency.copy(value = "")
+                    )
+                }
+            }
+
+            is StringToDoubleConversionResult.InValid -> Unit
+        }
+    }
+
+    fun swapCurrencies() {
+        _uiState.update {
+            it.copy(
+                fromCurrency = it.toCurrency,
+                toCurrency = it.fromCurrency
+            )
+        }
+    }
+
     private fun getIndicativeExchangeRate(
         fromCurrencyCode: String,
         toCurrencyCode: String
@@ -147,6 +199,16 @@ class CurrencyConvertorViewModel @Inject constructor(
     ): String {
         return CurrencyConverter.convert(fromVsBaseValue, toVsBaseValue, amount).let {
             String.format(Locale.ENGLISH, "%.2f", it)
+        }
+    }
+
+    private fun fromDate(date: String): String {
+        return try {
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyy")
+            OffsetDateTime.parse(date).format(formatter)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
         }
     }
 }

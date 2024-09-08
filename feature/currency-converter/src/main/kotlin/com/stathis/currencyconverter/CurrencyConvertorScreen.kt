@@ -56,12 +56,8 @@ fun CurrencyConvertorRoute(
     CurrencyConverterScreen(
         uiState = uiState,
         onFromCurrencyChange = viewModel::onFromCurrencyChange,
-        onToCurrencyChange = {
-
-        },
-        onSwap = {
-
-        }
+        onToCurrencyChange = viewModel::onToCurrencyChange,
+        onSwap = viewModel::swapCurrencies
     )
 }
 
