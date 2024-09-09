@@ -43,5 +43,10 @@ gradlePlugin {
             id = "moneyConvertor.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+
+        register("androidRoom") {
+            id = "moneyConvertor.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
     }
 }

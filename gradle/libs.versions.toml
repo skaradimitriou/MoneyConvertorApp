@@ -81,4 +81,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 moneyconvertor-jvm = { id = "moneyConvertor.jvm.library", version = "unspecified" }
 moneyconvertor-android-hilt = { id = "moneyConvertor.android.hilt", version = "unspecified" }
+moneyconvertor-android-room = { id = "moneyConvertor.android.room", version = "unspecified" }
 
