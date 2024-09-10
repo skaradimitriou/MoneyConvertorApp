@@ -25,6 +25,7 @@ dependencyResolutionManagement {
 rootProject.name = "MoneyConvertor"
 include(":app")
 include(":core:network")
+include(":core:common")
 include(":core:model")
 include(":core:data")
 include(":core:database")

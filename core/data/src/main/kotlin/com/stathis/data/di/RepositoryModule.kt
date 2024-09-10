@@ -1,7 +1,7 @@
 package com.stathis.data.di
 
 import com.stathis.data.repository.CurrencyRepository
-import com.stathis.data.repository.CurrencyRepositoryImpl
+import com.stathis.data.repository.OfflineFirstCurrencyRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun bindCurrencyRepository(impl: CurrencyRepositoryImpl): CurrencyRepository
+    abstract fun bindCurrencyRepository(impl: OfflineFirstCurrencyRepository): CurrencyRepository
 }

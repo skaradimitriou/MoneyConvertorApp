@@ -68,6 +68,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(libs.androidx.work)
+    implementation(libs.hilt.ext.work)
+
+    implementation(project(":core:data"))
     implementation(project(":core:network"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:currency-converter"))
