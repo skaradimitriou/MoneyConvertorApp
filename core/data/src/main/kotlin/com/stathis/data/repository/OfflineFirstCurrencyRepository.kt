@@ -24,7 +24,7 @@ class OfflineFirstCurrencyRepository @Inject constructor(
         )
     }
 
-    override suspend fun getExchangeRates(): Flow<ExchangeRates> {
+    override fun getExchangeRates(): Flow<ExchangeRates> {
         return dao.getExchangeRates().map { it.asExternalModel() }
     }
 }

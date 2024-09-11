@@ -1,11 +1,14 @@
 package com.stathis.database.converter
 
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.stathis.model.currency_convertor.CurrencyInfo
 
 class CurrencyRatesConvertor {
 
     //example => "key:code,value/key:code,value
 
+    @TypeConverter
     fun fromCurrenciesMapToString(currencies: Map<String, CurrencyInfo>): String {
         var result = ""
         currencies.forEach {
@@ -14,6 +17,7 @@ class CurrencyRatesConvertor {
         return result
     }
 
+    @TypeConverter
     fun fromCurrenciesStringToMap(string: String): Map<String, CurrencyInfo> {
         val result = mutableMapOf<String, CurrencyInfo>()
         val mapEntries = string.split("/")

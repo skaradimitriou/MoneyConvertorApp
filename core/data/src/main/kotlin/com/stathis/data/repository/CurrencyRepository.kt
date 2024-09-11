@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrencyRepository : Syncable {
 
-    suspend fun getExchangeRates(): Flow<ExchangeRates>
+    fun getExchangeRates(): Flow<ExchangeRates>
 }

@@ -3,14 +3,16 @@ package com.stathis.currencyconverter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stathis.data.repository.CurrencyRepository
+import com.stathis.data.worker.WorkManagerSyncManager
 import com.stathis.model.currency_convertor.CurrencyInfo
 import com.stathis.model.currency_convertor.ExchangeRates
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyConvertorViewModel @Inject constructor(
-    private val repository: CurrencyRepository
+    private val repository: CurrencyRepository,
+    workManagerSyncManager: WorkManagerSyncManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CurrencyConvertorUiState())
@@ -28,28 +31,33 @@ class CurrencyConvertorViewModel @Inject constructor(
     private lateinit var exchangeRates: ExchangeRates
 
     init {
+        workManagerSyncManager
+            .isSyncing
+            .onEach { isLoading ->
+                _uiState.update { it.copy(isLoading = isLoading) }
+            }
+            .launchIn(viewModelScope)
         initUiState()
     }
 
     private fun initUiState() {
-        val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            //temp
-        }
+        repository.getExchangeRates()
+            .retryWhen { cause, _ -> cause is IllegalStateException }
+            .onEach { exchangeRates ->
+                if (exchangeRates.rates.isEmpty()) return@onEach
+                this.exchangeRates = exchangeRates
 
-        viewModelScope.launch(handler) {
-            exchangeRates = repository.getExchangeRates()
-
-            _uiState.update {
-                it.copy(
-                    isLoading = false,
-                    allCurrencies = exchangeRates.rates.keys.map {
-                        CurrencyUiModel(code = it, value = "")
-                    },
-                    lastUpdated = fromDate(exchangeRates.lastUpdatedDate),
-                )
-            }
-            setInitialCurrencies()
-        }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        allCurrencies = exchangeRates.rates.keys.map {
+                            CurrencyUiModel(code = it, value = "")
+                        },
+                        lastUpdated = fromDate(exchangeRates.lastUpdatedDate),
+                    )
+                }
+                setInitialCurrencies()
+            }.launchIn(viewModelScope)
     }
 
     private fun setInitialCurrencies() {
