@@ -1,5 +1,6 @@
 package com.stathis.currencyconverter
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stathis.data.repository.CurrencyRepository
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrencyConvertorViewModel @Inject constructor(
     private val repository: CurrencyRepository,
+    private val sharedPreferences: SharedPreferences,
     workManagerSyncManager: WorkManagerSyncManager
 ) : ViewModel() {
 
@@ -29,6 +31,11 @@ class CurrencyConvertorViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     private lateinit var exchangeRates: ExchangeRates
+
+    companion object {
+        const val fromCurrencyKey = "fromCurrencyKey"
+        const val toCurrencyKey = "toCurrencyKey"
+    }
 
     init {
         workManagerSyncManager
@@ -84,8 +91,20 @@ class CurrencyConvertorViewModel @Inject constructor(
     }
 
     private fun getUserCurrencies(): Pair<CurrencyInfo, CurrencyInfo> {
-        val fromCurrency = CurrencyInfo("USD", exchangeRates.rates.getValue("USD"))
-        val toCurrency = CurrencyInfo("EUR", exchangeRates.rates.getValue("EUR"))
+        val fromCurrencyCode = sharedPreferences.getString(fromCurrencyKey, null)
+        val toCurrencyCode = sharedPreferences.getString(toCurrencyKey, null)
+        var fromCurrency = CurrencyInfo("USD", exchangeRates.rates.getValue("USD"))
+        var toCurrency = CurrencyInfo("EUR", exchangeRates.rates.getValue("EUR"))
+
+        if (fromCurrencyCode != null) {
+            fromCurrency =
+                CurrencyInfo(fromCurrencyCode, exchangeRates.rates.getValue(fromCurrencyCode))
+        }
+
+        if (toCurrencyCode != null) {
+            toCurrency = CurrencyInfo(toCurrencyCode, exchangeRates.rates.getValue(toCurrencyCode))
+        }
+
         return Pair(fromCurrency, toCurrency)
     }
 
@@ -111,6 +130,8 @@ class CurrencyConvertorViewModel @Inject constructor(
                         )
                     }
                 }
+
+                sharedPreferences.edit().putString(fromCurrencyKey, fromCurrency.code).apply()
             }
 
             is StringToDoubleConversionResult.Empty -> {
@@ -134,6 +155,7 @@ class CurrencyConvertorViewModel @Inject constructor(
                 )
             }
             onFromCurrencyChange(fromCurrency = uiState.value.fromCurrency)
+            sharedPreferences.edit().putString(toCurrencyKey, toCurrency.code).apply()
             return
         }
 

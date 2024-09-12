@@ -48,7 +48,7 @@ import com.stathis.designsystem.theme.MoneyConvertorTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun CurrencyConvertorRoute(
+internal fun CurrencyConvertorRoute(
     viewModel: CurrencyConvertorViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

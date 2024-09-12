@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml:2:13-83
-INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml:2:13-83
+ADDED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml:2:13-83
+INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml:2:13-83
 	package
-		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml
+		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml
 	xmlns:android
-		ADDED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml:2:23-81
+		ADDED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml:2:23-81
 uses-sdk
-INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml reason: use-sdk injection requested
-INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml
-INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml
+INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml reason: use-sdk injection requested
+INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml
+INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml
 	android:targetSdkVersion
-		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml
+		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml
 	android:minSdkVersion
-		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11561795378364237200.xml
+		INJECTED from /Users/stathiskaradimitriou/AndroidStudioProjects/MoneyConvertorApp/core/network/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest4082564895297310656.xml
