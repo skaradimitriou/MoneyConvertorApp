@@ -49,10 +49,15 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:testing"))
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    testImplementation(libs.mockito)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
