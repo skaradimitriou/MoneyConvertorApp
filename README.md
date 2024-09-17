@@ -1,6 +1,6 @@
 ## Master Multi-Module Architecture for Android Development
 
-This repository contains a Currency Convertor android application built as a part of thi [Udemy Course](https://www.udemy.com/course/master-multi-module-architecture-for-android-development).
+This repository contains a Currency Convertor android application built as a part of this [Udemy Course](https://www.udemy.com/course/master-multi-module-architecture-for-android-development).
 
 ## Learning Goals 🎯
 
